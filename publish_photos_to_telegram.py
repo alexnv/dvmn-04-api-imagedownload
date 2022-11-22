@@ -17,18 +17,20 @@ def publish_photo_to_telegram(image, bot):
         bot.send_document(chat_id=chat_id, document=image_file)
 
 
+def publish_files_to_telegram(root, files, timeout, bot):
+    for file in files:
+        publish_photo_to_telegram(join(root, file), bot)
+        time.sleep(timeout)
+
+
 def publish_photos_to_telegram(timeout, bot):
     for root, dirs, files in list(os.walk(get_imagefolder())):
-        for file in files:
-            publish_photo_to_telegram(join(root, file), bot)
-            time.sleep(timeout)
+        publish_files_to_telegram(root, files, timeout, bot)
 
     while True:
         for root, dirs, files in list(os.walk(get_imagefolder())):
             random.shuffle(files)
-            for file in files:
-                publish_photo_to_telegram(join(root, file), bot)
-                time.sleep(timeout)
+            publish_files_to_telegram(root, files, timeout, bot)
 
 
 def init_telegram_bot():
