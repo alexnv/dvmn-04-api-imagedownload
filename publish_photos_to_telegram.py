@@ -12,7 +12,7 @@ from common_functions import get_imagefolder
 
 
 def publish_photo_to_telegram(image, bot):
-    chat_id = os.getenv('TELEGRAM_BOT_CHANEL')
+    chat_id = os.environ['TELEGRAM_BOT_CHANEL']
     with open(image, 'rb') as image_file:
         bot.send_document(chat_id=chat_id, document=image_file)
 
@@ -34,7 +34,7 @@ def publish_photos_to_telegram(timeout, bot):
 
 
 def init_telegram_bot():
-    telegram_bot_token = os.getenv('TELEGRAM_BOT_TOKEN')
+    telegram_bot_token = os.environ['TELEGRAM_BOT_TOKEN']
     if telegram_bot_token:
         return telegram.Bot(token=telegram_bot_token)
 

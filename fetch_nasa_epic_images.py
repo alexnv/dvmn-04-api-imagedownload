@@ -32,7 +32,7 @@ def fetch_nasa_epic(apod_key):
 def main():
     logging.getLogger().setLevel(logging.INFO)
     load_dotenv()
-    APOD_KEY = os.getenv("APOD_KEY")
+    APOD_KEY = os.environ["APOD_KEY"]
     if APOD_KEY:
         fetch_nasa_epic(APOD_KEY)
 
