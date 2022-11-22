@@ -8,6 +8,8 @@ from os.path import join
 import telegram
 from dotenv import load_dotenv
 
+from common_functions import get_imagefolder
+
 
 def publish_photo_to_telegram(image, bot):
     chat_id = os.getenv('TELEGRAM_BOT_CHANEL', default='@alexnv_dvmn_bot_test')
@@ -16,13 +18,13 @@ def publish_photo_to_telegram(image, bot):
 
 
 def publish_photos_to_telegram(timeout, bot):
-    for root, dirs, files in list(os.walk('./images')):
+    for root, dirs, files in list(os.walk(get_imagefolder())):
         for file in files:
             publish_photo_to_telegram(join(root, file), bot)
             time.sleep(timeout)
 
     while True:
-        for root, dirs, files in list(os.walk('./images')):
+        for root, dirs, files in list(os.walk(get_imagefolder())):
             random.shuffle(files)
             for file in files:
                 publish_photo_to_telegram(join(root, file), bot)
