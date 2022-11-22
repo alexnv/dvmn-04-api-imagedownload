@@ -17,8 +17,8 @@ def get_file_extension_from_url(url):
     url_structure = urlsplit(url)
     path = unquote(url_structure.path)
 
-    (head, tail) = os.path.split(path)
-    (root, ext) = os.path.splitext(tail)
+    head, tail = os.path.split(path)
+    root, ext = os.path.splitext(tail)
 
     return ext
 
