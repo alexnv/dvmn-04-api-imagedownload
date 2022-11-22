@@ -8,8 +8,8 @@ from common_functions import save_image_to_file_from_url, get_imagefolder_filena
 
 
 def get_lastest_spacex_lauch_images(flight_id):
-    if flight_id:
-        url = 'https://api.spacexdata.com/v5/launches'
+    if flight_id and (len(flight_id) == 24):
+        url = f'https://api.spacexdata.com/v5/launches/{flight_id}'
         payload = {
             'flight_id': flight_id
         }
@@ -22,12 +22,11 @@ def get_lastest_spacex_lauch_images(flight_id):
     response.raise_for_status()
 
     launch_json = response.json()
-    if flight_id:
+    if flight_id and (len(flight_id) == 24):
         # у запусков может не быть изображений, вернем только те запуски, где больше 5 картинок
-        for launch_info in launch_json:
-            if len(launch_info['links']['flickr']['original']) >= 5:
-                launch_image_urls = launch_info['links']['flickr']['original']
-                break
+        if len(launch_json['links']['flickr']['original']) >= 5:
+            launch_image_urls = launch_json['links']['flickr']['original']
+
     else:
         launch_image_urls = launch_json['links']['flickr']['original']
     return launch_image_urls
