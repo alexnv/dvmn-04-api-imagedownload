@@ -11,7 +11,9 @@ from dotenv import load_dotenv
 
 def publish_photo_to_telegram(image, bot):
     chat_id = os.getenv('TELEGRAM_BOT_CHANEL', default='@alexnv_dvmn_bot_test')
-    bot.send_document(chat_id=chat_id, document=open(image, 'rb'))
+    with open(image, 'rb') as image_file:
+        bot.send_document(chat_id=chat_id, document=image_file)
+
 
 def publish_photos_to_telegram(timeout, bot):
     for root, dirs, files in list(os.walk('./images')):
