@@ -20,16 +20,21 @@ def fetch_nasa_apod(apod_key):
     image_urls = response.json()
     get_imagefolder().mkdir(parents=True, exist_ok=True)
     for index, image_data in enumerate(image_urls):
-        image_extension = get_file_extension_from_url(image_data['url'])
-        file_name = get_imagefolder_filename(f'nasa_apod_{index}{image_extension}')
-        logging.info(f"Downloading image from url: {image_data['url']} to {file_name}")
-        if image_extension:
-            save_image_to_file_from_url(image_data['url'], file_name)
+        if image_data['media_type'] == 'image':
+            image_extension = get_file_extension_from_url(image_data['url'])
+            file_name = get_imagefolder_filename(f'nasa_apod_{index}{image_extension}')
+            logging.info(f"Downloading image from url: {image_data['url']} to {file_name}")
+            if image_extension:
+                save_image_to_file_from_url(image_data['url'], file_name)
 
 
-if __name__ == '__main__':
+def main():
     logging.getLogger().setLevel(logging.INFO)
     load_dotenv()
     APOD_KEY = os.getenv("APOD_KEY")
     if APOD_KEY:
         fetch_nasa_apod(APOD_KEY)
+
+
+if __name__ == '__main__':
+    main()

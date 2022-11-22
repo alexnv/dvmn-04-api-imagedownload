@@ -29,9 +29,13 @@ def fetch_nasa_epic(apod_key):
         save_image_to_file_from_url(url, file_name)
 
 
-if __name__ == '__main__':
+def main():
     logging.getLogger().setLevel(logging.INFO)
     load_dotenv()
     APOD_KEY = os.getenv("APOD_KEY")
     if APOD_KEY:
         fetch_nasa_epic(APOD_KEY)
+
+
+if __name__ == '__main__':
+    main()
