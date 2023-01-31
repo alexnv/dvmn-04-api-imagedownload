@@ -24,13 +24,13 @@ def publish_files_to_telegram(root, files, timeout, bot):
 
 
 def publish_photos_to_telegram(timeout, bot):
-    for root, dirs, files in list(os.walk(get_imagefolder())):
-        publish_files_to_telegram(root, files, timeout, bot)
-
+    first_run = True
     while True:
         for root, dirs, files in list(os.walk(get_imagefolder())):
-            random.shuffle(files)
+            if not first_run:
+                random.shuffle(files)
             publish_files_to_telegram(root, files, timeout, bot)
+            first_run = False
 
 
 def init_telegram_bot():
