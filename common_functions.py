@@ -5,8 +5,8 @@ from urllib.parse import urlsplit, unquote
 import requests
 
 
-def save_image_to_file_from_url(image_url, file_name):
-    response = requests.get(image_url)
+def save_image_to_file_from_url(image_url, file_name, payload=None):
+    response = requests.get(image_url, params=payload)
     response.raise_for_status()
 
     with open(file_name, 'wb') as file:

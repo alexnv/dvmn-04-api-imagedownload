@@ -23,10 +23,10 @@ def fetch_nasa_epic(apod_key):
         image_name = image['image']
         image_date = datetime.fromisoformat(image['date']).strftime("%Y/%m/%d")
 
-        url = f'https://api.nasa.gov/EPIC/archive/natural/{image_date}/png/{image_name}.png?api_key={apod_key}'
+        url = f'https://api.nasa.gov/EPIC/archive/natural/{image_date}/png/{image_name}.png'
         file_name = get_imagefolder_filename(f"nasa_epic_{image_name}.png")
         logging.info(f"Downloading image from url: {url} to {file_name}")
-        save_image_to_file_from_url(url, file_name)
+        save_image_to_file_from_url(url, file_name, payload=payload)
 
 
 def main():
