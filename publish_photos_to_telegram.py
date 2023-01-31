@@ -1,10 +1,12 @@
 import argparse
+import logging
 import os
 import random
 import sys
 import time
 from os.path import join
 
+import requests
 import telegram
 from dotenv import load_dotenv
 
@@ -25,12 +27,18 @@ def publish_files_to_telegram(root, files, timeout, bot):
 
 def publish_photos_to_telegram(timeout, bot):
     first_run = True
+    error_delay = 1
     while True:
-        for root, dirs, files in list(os.walk(get_imagefolder())):
-            if not first_run:
-                random.shuffle(files)
-            publish_files_to_telegram(root, files, timeout, bot)
-            first_run = False
+        try:
+            for root, dirs, files in list(os.walk(get_imagefolder())):
+                if not first_run:
+                    random.shuffle(files)
+                publish_files_to_telegram(root, files, timeout, bot)
+                first_run = False
+        except (telegram.error.NetworkError, requests.Timeout) as error:
+            time.sleep(error_delay)
+            error_delay = 30
+            logging.error(error)
 
 
 def init_telegram_bot():
@@ -50,6 +58,7 @@ if __name__ == "__main__":
     load_dotenv()
     args = init_args()
     tgbot = init_telegram_bot()
+    logging.getLogger().setLevel(logging.INFO)
     if tgbot:
         timeout_in_seconds = int(args.timeout) * 60 * 60
         publish_photos_to_telegram(timeout_in_seconds, tgbot)
