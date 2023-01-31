@@ -7,26 +7,23 @@ import requests
 from common_functions import save_image_to_file_from_url, get_imagefolder_filename, get_imagefolder
 
 
-def get_lastest_spacex_lauch_images(flight_id):
-    if flight_id and (len(flight_id) == 24):
-        url = f'https://api.spacexdata.com/v5/launches/{flight_id}'
-    else:
-        url = 'https://api.spacexdata.com/v5/launches/latest'
+def get_lastest_spacex_lauch_images(flight_id="latest"):
+    url = f'https://api.spacexdata.com/v5/launches/{flight_id}'
     response = requests.get(url)
     response.raise_for_status()
 
     launch_json = response.json()
-    if flight_id and (len(flight_id) == 24):
-        # у запусков может не быть изображений, вернем только те запуски, где больше 5 картинок
-        if len(launch_json['links']['flickr']['original']) >= 5:
-            launch_image_urls = launch_json['links']['flickr']['original']
-
-    else:
+    # у запусков может не быть изображений, вернем только те запуски, где больше 5 картинок
+    if len(launch_json['links']['flickr']['original']) >= 5:
         launch_image_urls = launch_json['links']['flickr']['original']
+
     return launch_image_urls
 
 
 def fetch_spacex_last_launch(flight_id):
+    if len(flight_id) != 0 or len(flight_id) != 24:
+        raise Exception("Длинна ID запуска должна быть 24 символа, либо пустая строка")
+
     get_imagefolder().mkdir(parents=True, exist_ok=True)
 
     launch_images = get_lastest_spacex_lauch_images(flight_id)
