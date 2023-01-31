@@ -14,14 +14,15 @@ def get_lastest_spacex_lauch_images(flight_id="latest"):
 
     launch_json = response.json()
     # у запусков может не быть изображений, вернем только те запуски, где больше 5 картинок
-    if len(launch_json['links']['flickr']['original']) >= 5:
+    launch_image_urls = launch_json['links']['flickr']['original']
+    if len(launch_image_urls) >= 5:
         launch_image_urls = launch_json['links']['flickr']['original']
-
-    return launch_image_urls
+        return launch_image_urls
+    return []
 
 
 def fetch_spacex_last_launch(flight_id):
-    if len(flight_id) != 0 or len(flight_id) != 24:
+    if flight_id != "latest" and len(flight_id) != 24:
         raise Exception("Длинна ID запуска должна быть 24 символа, либо пустая строка")
 
     get_imagefolder().mkdir(parents=True, exist_ok=True)
@@ -35,7 +36,7 @@ def fetch_spacex_last_launch(flight_id):
 
 def init_args():
     parser = argparse.ArgumentParser(description='Программа загружает фото запусков SpaceX по указанному ID запуска')
-    parser.add_argument('id', help='ID Запуска', nargs='?')
+    parser.add_argument('id', help='ID Запуска', nargs='?', default="latest")
 
     return parser.parse_args(sys.argv[1:])
 
