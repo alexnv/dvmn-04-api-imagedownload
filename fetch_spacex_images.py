@@ -10,15 +10,9 @@ from common_functions import save_image_to_file_from_url, get_imagefolder_filena
 def get_lastest_spacex_lauch_images(flight_id):
     if flight_id and (len(flight_id) == 24):
         url = f'https://api.spacexdata.com/v5/launches/{flight_id}'
-        payload = {
-            'flight_id': flight_id
-        }
     else:
         url = 'https://api.spacexdata.com/v5/launches/latest'
-        payload = {
-
-        }
-    response = requests.get(url, params=payload)
+    response = requests.get(url)
     response.raise_for_status()
 
     launch_json = response.json()
