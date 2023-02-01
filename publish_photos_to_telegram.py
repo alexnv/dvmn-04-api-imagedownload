@@ -26,15 +26,12 @@ def publish_files_to_telegram(root, files, timeout, bot, chat_id):
 
 
 def publish_photos_to_telegram(timeout, bot, chat_id):
-    first_run = True
     error_delay = 1
     while True:
         try:
             for root, dirs, files in os.walk(get_imagefolder()):
-                if not first_run:
-                    random.shuffle(files)
                 publish_files_to_telegram(root, files, timeout, bot, chat_id)
-                first_run = False
+                random.shuffle(files)
         except (telegram.error.NetworkError, requests.Timeout, requests.ConnectionError) as error:
             time.sleep(error_delay)
             error_delay = 30
@@ -65,7 +62,7 @@ if __name__ == "__main__":
     if not chat_id:
         logging.error("Не задано значение переменной окружения TELEGRAM_BOT_CHANEL")
         exit()
-        
+
     tgbot = init_telegram_bot(telegram_bot_token)
     logging.getLogger().setLevel(logging.INFO)
     if tgbot:
