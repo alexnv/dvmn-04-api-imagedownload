@@ -23,7 +23,7 @@ def get_lastest_spacex_lauch_images(flight_id="latest"):
 
 def fetch_spacex_last_launch(flight_id):
     if flight_id != "latest" and len(flight_id) != 24:
-        raise Exception("Длинна ID запуска должна быть 24 символа, либо пустая строка")
+        raise ValueError("Длинна ID запуска должна быть 24 символа, либо пустая строка")
 
     get_imagefolder().mkdir(parents=True, exist_ok=True)
 
