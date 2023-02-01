@@ -8,11 +8,11 @@ from common_functions import save_image_to_file_from_url, get_file_extension_fro
     get_imagefolder
 
 
-def fetch_nasa_apod(apod_key):
+def fetch_nasa_apod(apod_key, image_count='5'):
     url = 'https://api.nasa.gov/planetary/apod'
     payload = {
         'api_key': apod_key,
-        'count': '5'
+        'count': image_count
     }
     response = requests.get(url, params=payload)
     response.raise_for_status()
@@ -32,8 +32,9 @@ def main():
     logging.getLogger().setLevel(logging.INFO)
     load_dotenv()
     APOD_KEY = os.environ["APOD_KEY"]
+    IMAGE_COUNT = os.getenv("IMG_COUNT", "5")
     if APOD_KEY:
-        fetch_nasa_apod(APOD_KEY)
+        fetch_nasa_apod(APOD_KEY, IMAGE_COUNT)
     else:
         logging.error("Не задано значение переменной окружения APOD_KEY")
 
