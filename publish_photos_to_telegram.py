@@ -42,8 +42,7 @@ def publish_photos_to_telegram(timeout, bot, chat_id):
 
 
 def init_telegram_bot(telegram_bot_token):
-    if telegram_bot_token:
-        return telegram.Bot(token=telegram_bot_token)
+    return telegram.Bot(token=telegram_bot_token)
 
 
 def init_args():
@@ -59,11 +58,18 @@ if __name__ == "__main__":
 
     chat_id = os.environ['TELEGRAM_BOT_CHANEL']
     telegram_bot_token = os.environ['TELEGRAM_BOT_TOKEN']
+    if not telegram_bot_token:
+        logging.error("Не задано значение переменной окружения TELEGRAM_BOT_TOKEN")
+        exit()
 
+    if not chat_id:
+        logging.error("Не задано значение переменной окружения TELEGRAM_BOT_CHANEL")
+        exit()
+        
     tgbot = init_telegram_bot(telegram_bot_token)
     logging.getLogger().setLevel(logging.INFO)
     if tgbot:
         timeout_in_seconds = int(args.timeout) * 60 * 60
         publish_photos_to_telegram(timeout_in_seconds, tgbot, chat_id)
     else:
-        logging.error("Не задано значение переменной окружения TELEGRAM_BOT_TOKEN")
+        logging.error("Не удалось подключиться к Telegramm")
