@@ -34,6 +34,8 @@ def main():
     APOD_KEY = os.environ["APOD_KEY"]
     if APOD_KEY:
         fetch_nasa_apod(APOD_KEY)
+    else:
+        logging.error("Не задано значение переменной окружения APOD_KEY")
 
 
 if __name__ == '__main__':

@@ -65,3 +65,5 @@ if __name__ == "__main__":
     if tgbot:
         timeout_in_seconds = int(args.timeout) * 60 * 60
         publish_photos_to_telegram(timeout_in_seconds, tgbot, chat_id)
+    else:
+        logging.error("Не задано значение переменной окружения TELEGRAM_BOT_TOKEN")
