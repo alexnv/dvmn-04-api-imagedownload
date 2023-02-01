@@ -15,9 +15,8 @@ def get_lastest_spacex_lauch_images(flight_id="latest"):
     launch_info = response.json()
     # у запусков может не быть изображений, вернем только те запуски, где больше 5 картинок
     launch_image_urls = launch_info['links']['flickr']['original']
-    if len(launch_image_urls) >= 5:
-        return launch_image_urls
-    return []
+
+    return launch_image_urls
 
 
 def fetch_spacex_last_launch(flight_id):
