@@ -30,7 +30,7 @@ def publish_photos_to_telegram(timeout, bot, chat_id):
     error_delay = 1
     while True:
         try:
-            for root, dirs, files in list(os.walk(get_imagefolder())):
+            for root, dirs, files in os.walk(get_imagefolder()):
                 if not first_run:
                     random.shuffle(files)
                 publish_files_to_telegram(root, files, timeout, bot, chat_id)
